@@ -56,12 +56,30 @@ public class DashBoardGUI extends JFrame implements ActionListener{
         if(o == btnDeposit){
             String s = (String)JOptionPane.showInputDialog(null,"Please enter the amount you would like to deposit","Message" , JOptionPane.PLAIN_MESSAGE);
         }
+        
         if (o == btnWithdraw){
             String s = (String)JOptionPane.showInputDialog(null,"Please enter the amount you would like to withdraw","Message" , JOptionPane.PLAIN_MESSAGE);
         }
+        
         if (o == btnTransfer){
-            String s = (String)JOptionPane.showInputDialog(null,"Please enter the amount you would like to transfer and the Account number that you are transferring to","Message" , JOptionPane.PLAIN_MESSAGE);
+            JPanel myPanel = new JPanel();
+            JLabel lblAccountNum = new JLabel("Account Number : ");
+            JLabel lblAmmount = new JLabel("Amount : ");
+            JTextField txtAmount = new JTextField();
+            JTextField txtAccountNum = new JTextField();
+            JLabel lblText = new JLabel("Please Enter the Account number you wish to tranfer to and the Amount you wish to transfer");
+            
+            myPanel.setLayout(new GridLayout(5,2));
+            
+            myPanel.add(lblText);
+            myPanel.add(lblAccountNum);
+            myPanel.add(txtAccountNum);
+            myPanel.add(lblAmmount);
+            myPanel.add(txtAmount);
+            
+            JOptionPane.showConfirmDialog(null,myPanel,"Message",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
         }
+        
         if (o == btnInquiry){
             JOptionPane.showMessageDialog(null,"Your balance is ","Message",JOptionPane.INFORMATION_MESSAGE);
         }
