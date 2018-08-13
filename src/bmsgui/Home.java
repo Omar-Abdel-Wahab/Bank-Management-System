@@ -7,6 +7,7 @@ import java.awt.event.*;
 
 public class Home extends JFrame {
 
+    JFrame frame = this;
     JPanel pnlTop = new JPanel();
     JPanel pnlMain = new JPanel();
     JPanel pnlBottom = new JPanel();
@@ -20,7 +21,7 @@ public class Home extends JFrame {
     JButton btnLogin = new JButton("Login");
     JButton btnCreateProfile = new JButton("Create Profile");
     JButton btnRecoverProfile = new JButton("Recover Profile");
-    String strLogin = "login.txt";
+    String strLogin = "Login.txt";
 
     public Home() {
 
@@ -38,21 +39,24 @@ public class Home extends JFrame {
         pnlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         pnlTop.add(lblWelcome);
 
-        lblUsername.setPreferredSize(new Dimension(300, 30));
-        lblPassword.setPreferredSize(new Dimension(300, 50));
-        txtUsername.setPreferredSize(new Dimension(300, 30));
-        txtPassword.setPreferredSize(new Dimension(300, 30));
-        btnLogin.setPreferredSize(new Dimension(150, 30));
+        Dimension d1 = new Dimension(300,30);
+        Dimension d2 = new Dimension(300,50);
+        Dimension d3 = new Dimension (150,30);
+        lblUsername.setPreferredSize(d1);
+        lblPassword.setPreferredSize(d2);
+        txtUsername.setPreferredSize(d1);
+        txtPassword.setPreferredSize(d1);
+        btnLogin.setPreferredSize(d3);
         pnlMain.add(lblUsername);
         pnlMain.add(txtUsername);
         pnlMain.add(lblPassword);
         pnlMain.add(txtPassword);
         pnlMain.add(btnLogin);
 
-        lblCreateProfile.setPreferredSize(new Dimension(300, 30));
-        lblRecoverProfile.setPreferredSize(new Dimension(300, 30));
-        btnCreateProfile.setPreferredSize(new Dimension(150, 30));
-        btnRecoverProfile.setPreferredSize(new Dimension(150, 30));
+        lblCreateProfile.setPreferredSize(d1);
+        lblRecoverProfile.setPreferredSize(d1);
+        btnCreateProfile.setPreferredSize(d3);
+        btnRecoverProfile.setPreferredSize(d3);
         pnlBottom.add(lblCreateProfile);
         pnlBottom.add(btnCreateProfile);
         pnlBottom.add(lblRecoverProfile);
@@ -65,70 +69,45 @@ public class Home extends JFrame {
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                String strUsername = txtUsername.getText();
-                String strPassword = txtPassword.getText();
+                String username = txtUsername.getText();
+                String password = txtPassword.getText();
+                boolean success = false;
                 
-                try {    
-                    FileReader file = new FileReader(strLogin);
-                    BufferedReader read = new BufferedReader(file);
-                    String input = read.readLine();
-                    boolean success = false;
-                   
-                    while (input != null) {
-                        if (input.contains(strUsername) && input.contains(strPassword)) {
-                            JOptionPane.showMessageDialog(null,
-                                    "Login Successful",
-                                    "Login",
-                                    JOptionPane.WARNING_MESSAGE);
-                            success = true;
-
-                            // Place your code Here !!
-                            // Your code supposed to call the dashboard gui & extract...
-                            // the profile data from the txt file named after the ...
-                            // username.
-                            break;
-                        }
-                        input = read.readLine();
-                    }
-                    if (!success) {
-                        JOptionPane.showMessageDialog(null,
-                                "Login Failled",
-                                "Login",
-                                JOptionPane.WARNING_MESSAGE);
-                        txtUsername.repaint();
-                        txtPassword.repaint();
-                    }
-                    read.close();
-                    file.close();
-                    
-                } catch (Exception ex) {
-                    try {
-                        JOptionPane.showMessageDialog(null,
-                                "Looks like you are my first client, "
-                                + "a test profile will be generated now. "
-                                + "Username is 'admin' & password is '1234'",
-                                "Status",
-                                JOptionPane.WARNING_MESSAGE);
-                        
-                        FileWriter file = new FileWriter("login.txt");
-                        PrintWriter print = new PrintWriter(file);
-                        print.println("admin 1234");
-                        print.close();
-                        file.close();
-                        
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try{
+                File f = new File("Login.txt");
+                FileReader fr = new FileReader(f);
+                BufferedReader br = new BufferedReader(fr);
+                while(br.ready()){
+                    String strUsername = br.readLine();
+                    String strPassword = br.readLine();
+                    if(strUsername.equals(username) && strPassword.equals(password)){
+                        JOptionPane.showMessageDialog(frame, "Login Successful");
+                        success = true;
+                        break;
                     }
                 }
-                txtUsername.setText(" ");
-                txtPassword.setText(" ");
-                txtUsername.repaint();
-                txtPassword.repaint();
+                if(!success){
+                    JOptionPane.showMessageDialog(frame, "Login Failed");
+                }
+                fr.close();
+                br.close();
+                txtUsername.setText("");
+                txtPassword.setText("");
+                
+                }catch(FileNotFoundException e1){
+                    JOptionPane.showMessageDialog(frame, "Login.txt file doesn't exist");
+                }
+                catch(IOException e2){
+                    JOptionPane.showMessageDialog(frame, "Please check that the Login.txt"
+                            + "file isn't in use or deleted");
+                }
             }
         });
         btnCreateProfile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                CreateProfile cp = new CreateProfile();
+                cp.setVisible(true);
                 // Place your code Here !!
                 // Your code supposed to call the create account gui & import
                 // the profile data to a txt file named after the ...
@@ -140,51 +119,36 @@ public class Home extends JFrame {
             public void actionPerformed(ActionEvent evt) {
                 String strUsernameRecover = JOptionPane.showInputDialog(
                         "Enter your username");
+                String strPasswordRecover;
                 try {
-                    FileReader file = new FileReader(strLogin);
-                    BufferedReader read = new BufferedReader(file);
-                    String input = read.readLine();
+                    File f = new File("Login.txt");
+                    FileReader fr = new FileReader(f);
+                    BufferedReader br = new BufferedReader(fr);
+                    String username = br.readLine();
                     boolean recovered = false;
                     
-                    while (input != null) {
-                        if (input.contains(strUsernameRecover)) {
-                            String strPasswordRecover = input.substring(
-                                    strUsernameRecover.length());
-                            JOptionPane.showMessageDialog(null,
-                                    "Your Passowrd is: " + strPasswordRecover,
-                                    "Recovery",
-                                    JOptionPane.WARNING_MESSAGE);
+                    while (br.ready()) {
+                        if (username.equals(strUsernameRecover)) {
+                            strPasswordRecover = br.readLine();
+                            JOptionPane.showMessageDialog(frame, "Your Passowrd is: " + 
+                                    strPasswordRecover);
                             recovered = true;
                             break;
                         }
-                        input = read.readLine();
+                        username = br.readLine();
                     }
                     if (!recovered) {
-                        JOptionPane.showMessageDialog(null,
-                                "Profile Doesn't Exist",
-                                "Recovery",
-                                JOptionPane.WARNING_MESSAGE);
-                        txtUsername.repaint();
-                        txtPassword.repaint();
-                    }
-                    read.close();
-                    file.close();
-                } catch (Exception e) {
-                    try {
-                        JOptionPane.showMessageDialog(null,
-                                "Looks like you are my first client, a test profile will "
-                                + "be generated now. Username is 'admin' & "
-                                + "password is '1234'",
-                                "Status",
-                                JOptionPane.WARNING_MESSAGE);
-                        FileWriter file = new FileWriter("login.txt");
-                        PrintWriter print = new PrintWriter(file);
-                        print.println("admin 1234");
-                        print.close();
-                        file.close();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+                        JOptionPane.showMessageDialog(frame,"Profile Doesn't Exist");
+                        }
+                    br.close();
+                    fr.close();
+                }
+                catch(FileNotFoundException e1){
+                    JOptionPane.showMessageDialog(frame, "Login.txt doesn't exist");
+                }
+                catch (IOException e2) {
+                    JOptionPane.showMessageDialog(frame, "Please check that the Login.txt"
+                            + "file isn't in use or deleted");
                 }
             }
         });
