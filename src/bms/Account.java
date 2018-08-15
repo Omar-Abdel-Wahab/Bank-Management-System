@@ -4,27 +4,43 @@ public class Account {
 
     private int id;
     private Client client;
-    private double balance;
-    private String password;
+    private int balance;
     private boolean open;
+    private boolean onLoan;
 
     public Account() {
     }
 
-    public Account(int id, Client client, double balance, String password, boolean open) {
+    public Account(int id, Client client, int balance, boolean open, boolean onLoan) {
         this.id = id;
         this.client = client;
         this.balance = balance;
-        this.password = password;
         this.open = open;
+        this.onLoan = onLoan;
     }
     
-    public Account(int id, Client client, double balance, String password) {
+    public Account(int id, Client client, int balance) {
         this.id = id;
         this.client = client;
         this.balance = balance;
-        this.password = password;
         this.open = true;
+        this.onLoan = false;
+    }
+    
+    public Account(int id, Client client){
+        this.id = id;
+        this.client = client;
+        this.balance = 0;
+        this.open = true;
+        this.onLoan = false;
+    }
+    
+    public Account(int id, Client client, int balance, boolean onLoan){
+        this.id = id;
+        this.client = client;
+        this.balance = balance;
+        this.open = true;
+        this.onLoan = onLoan;
     }
     
     public int getId() {
@@ -35,16 +51,16 @@ public class Account {
         return client;
     }
 
-    public double getBalance() {
+    public int getBalance() {
         return balance;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public boolean isOpen() {
         return open;
+    }
+
+    public boolean isOnLoan() {
+        return onLoan;
     }
 
     public void setId(int id) {
@@ -55,22 +71,22 @@ public class Account {
         this.client = client;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setOpen(boolean open) {
         this.open = open;
     }
 
+    public void setOnLoan(boolean onLoan) {
+        this.onLoan = onLoan;
+    }
+
     @Override
     public String toString() {
-        return "ID: " + id + "\n" + "Client: " + client + "\n" + "Balance: " + "\n" + 
-                "Open: " + open + "\n";
+        return "ID: " + id + "\n" + "Client: " + client + "\n" + "Balance: " + balance
+                + "\n" + "Open: " + open + "\n" + "On Loan: " + onLoan;
     }
 
     @Override
