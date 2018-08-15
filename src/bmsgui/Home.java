@@ -1,5 +1,6 @@
 package bmsgui;
 
+import bms.Client;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -72,25 +73,40 @@ public class Home extends JFrame {
                 String username = txtUsername.getText();
                 String password = txtPassword.getText();
                 boolean success = false;
+                int id = 0;
                 
                 try{
-                File f = new File("Login.txt");
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-                while(br.ready()){
-                    String strUsername = br.readLine();
-                    String strPassword = br.readLine();
+                File f1 = new File("Login.txt");
+                FileReader fr1 = new FileReader(f1);
+                BufferedReader br1 = new BufferedReader(fr1);
+                while(br1.ready()){
+                    String strUsername = br1.readLine();
+                    String strPassword = br1.readLine();
+                    id++;
                     if(strUsername.equals(username) && strPassword.equals(password)){
-                        JOptionPane.showMessageDialog(frame, "Login Successful");
                         success = true;
+                        
+                        File f2 = new File(username + ".txt");
+                        FileReader fr2 = new FileReader(f2);
+                        BufferedReader br2 = new BufferedReader(fr2);
+                        String name = br2.readLine();
+                        int age = Integer.parseInt(br2.readLine());
+                        int nationalNumber = Integer.parseInt(br2.readLine());
+                        String address = br2.readLine();
+                        String email = br2.readLine();
+                        String job = br2.readLine();
+                        Client c = new Client(name, age, nationalNumber, address, email, 
+                                job);
+                        ClientPage client = new ClientPage(username, c, id);
+                        client.setVisible(true);
                         break;
                     }
                 }
                 if(!success){
                     JOptionPane.showMessageDialog(frame, "Login Failed");
                 }
-                fr.close();
-                br.close();
+                fr1.close();
+                br1.close();
                 txtUsername.setText("");
                 txtPassword.setText("");
                 
@@ -108,10 +124,6 @@ public class Home extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CreateProfile cp = new CreateProfile();
                 cp.setVisible(true);
-                // Place your code Here !!
-                // Your code supposed to call the create account gui & import
-                // the profile data to a txt file named after the ...
-                // username.    
             }
         });
         btnRecoverProfile.addActionListener(new ActionListener() {
