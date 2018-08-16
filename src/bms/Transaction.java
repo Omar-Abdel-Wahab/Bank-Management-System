@@ -101,16 +101,17 @@ public class Transaction {
         return defaultAccount.getBalance();
     }
 
-    public void moneyTransfer(int amount) {
+    public void moneyTransfer(int amount) throws NegativeMoney, InsufficientBalance {
+        if(amount < 0)
+            throw new NegativeMoney("Can't transfer negative money");
         int balance1 = transferredFrom.getBalance();
         if (transferredFrom.isOpen() && transferredTo.isOpen() && amount <= balance1) {
             int balance2 = transferredTo.getBalance();
             transferredFrom.setBalance(balance1 - amount);
             transferredTo.setBalance(balance2 + amount);
-            //System.out.println("Done. Money transferred to the desired account.");
         } else {
-            //System.out.println("Sorry, your operation can't be executed. Account is 
-            //closed.");
+            throw new InsufficientBalance("The amount you're trying to transfer is greater"
+                    + "than your balance");
         }
     }
 
