@@ -121,7 +121,13 @@ public class ClientPage extends JDialog {
                     } else {
                         fr = new FileReader(f1);
                         br = new BufferedReader(fr);
-                        int balance = Integer.parseInt(br.readLine());
+                        String newBalance = br.readLine();
+                        int balance;
+                        if (newBalance == null) {
+                            balance = 0;
+                        } else {
+                            balance = Integer.parseInt(newBalance);
+                        }
                         a = new Account(id, client, balance);
                         t = new Transaction(a, "Deposit");
                         t.deposit(amount);
@@ -243,7 +249,13 @@ public class ClientPage extends JDialog {
                     }
                     FileReader fr = new FileReader(f1);
                     BufferedReader br = new BufferedReader(fr);
-                    int balance = Integer.parseInt(br.readLine());
+                    String newBalance = br.readLine();
+                        int balance;
+                        if (newBalance == null) {
+                            balance = 0;
+                        } else {
+                            balance = Integer.parseInt(newBalance);
+                        }
                     br.close();
                     fr.close();
                     if (!f3.exists()) {
