@@ -193,7 +193,13 @@ public class ClientPage extends JDialog {
                     } else {
                         fr = new FileReader(f1);
                         br = new BufferedReader(fr);
-                        int balance = Integer.parseInt(br.readLine());
+                        String newBalance = br.readLine();
+                        int balance;
+                        if (newBalance == null) {
+                            balance = 0;
+                        } else {
+                            balance = Integer.parseInt(newBalance);
+                        }
                         a = new Account(id, client, balance);
                         t = new Transaction(a, "Withdraw");
                         t.withdraw(amount);
@@ -228,7 +234,13 @@ public class ClientPage extends JDialog {
                 try {
                     FileReader fr = new FileReader(f);
                     BufferedReader br = new BufferedReader(fr);
-                    int balance = Integer.parseInt(br.readLine());
+                    String newBalance = br.readLine();
+                        int balance;
+                        if (newBalance == null) {
+                            balance = 0;
+                        } else {
+                            balance = Integer.parseInt(newBalance);
+                        }
                     JOptionPane.showMessageDialog(dg, "Your balance = " + balance);
                 } catch (FileNotFoundException e1) {
                     JOptionPane.showMessageDialog(dg, "Your balance = zero");
@@ -308,7 +320,13 @@ public class ClientPage extends JDialog {
                 try {
                     FileReader fr = new FileReader(f1);
                     BufferedReader br = new BufferedReader(fr);
-                    int balance = Integer.parseInt(br.readLine());
+                    String newBalance = br.readLine();
+                        int balance;
+                        if (newBalance == null) {
+                            balance = 0;
+                        } else {
+                            balance = Integer.parseInt(newBalance);
+                        }
                     br.close();
                     fr.close();
                     fr = new FileReader(f3);
