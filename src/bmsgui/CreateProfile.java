@@ -132,6 +132,7 @@ public class CreateProfile extends JDialog {
 
                     pw2.close();
                     fw2.close();
+                    JOptionPane.showMessageDialog(dg, "Done. Account created");
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(dg, "IOException encountered. Please check"
                             + "the Login.txt file if in use or deleted.");
